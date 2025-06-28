@@ -1,259 +1,280 @@
+// TextSettings.jsx
 import React, { useState } from 'react';
 import { useNode } from '@craftjs/core';
 import {
-    Type,
-    Bold,
-    Italic,
-    Underline,
-    AlignLeft,
-    AlignCenter,
-    AlignRight,
-    AlignJustify,
-    Palette,
-    Plus,
-    Minus,
-    Eye,
-    CornerUpLeft,
-    Move,
-    RotateCcw
+    Bold, Italic, Underline, Strikethrough,
+    AlignLeft, AlignCenter, AlignRight, AlignJustify
 } from 'lucide-react';
 
 export const TextSettings = () => {
-    const {
-        actions: { setProp },
-        props
-    } = useNode(node => ({
+    const { actions: { setProp }, props } = useNode(node => ({
         props: node.data.props
     }));
 
-    const [showColorPicker, setShowColorPicker] = useState(false);
+    const fontFamilies = [
+        'Arial', 'Helvetica', 'Times New Roman', 'Courier New',
+        'Roboto', 'Open Sans', 'Montserrat'
+    ];
 
     const NumberInput = ({ label, value, onChange, suffix = '', min = 0, max = 9999 }) => (
-        <div className="flex items-center justify-between">
-      <span className="text-[10px] text-gray-400 uppercase tracking-wider font-medium">
-        {label}
-      </span>
-            <div className="flex items-center bg-gray-700/80 rounded-md px-2 py-1.5 min-w-[65px] border border-gray-600/50">
+        <div className="flex items-center justify-between py-1">
+            <span className="text-[11px] text-gray-400 uppercase tracking-wider font-medium">{label}</span>
+            <div className="flex items-center bg-gray-700/60 rounded-sm px-1.5 py-1 min-w-[65px] border border-gray-600/40 focus-within:border-blue-500 transition-colors">
                 <input
                     type="number"
-                    value={value || 0}
+                    value={value != null ? value : ''}
                     min={min}
                     max={max}
-                    onChange={e => onChange(parseInt(e.target.value, 10) || 0)}
-                    className="bg-transparent text-white text-xs w-full text-right outline-none font-mono"
+                    onChange={e => onChange(parseFloat(e.target.value) || 0)}
+                    className="bg-transparent text-white text-xs w-full text-right outline-none font-mono placeholder-gray-500"
+                    placeholder="0"
                 />
                 {suffix && (
-                    <span className="text-gray-400 text-[10px] ml-1 font-medium">{suffix}</span>
+                    <span className="text-gray-400 text-[9px] ml-1 font-medium">{suffix}</span>
                 )}
             </div>
         </div>
     );
 
-    const IconButton = ({ icon: Icon, active = false, onClick, size = 'sm' }) => (
+    const IconButton = ({ icon: Icon, active, onClick, title }) => (
         <button
             onClick={onClick}
+            title={title}
             className={`
-        ${size === 'sm' ? 'p-1.5 w-7 h-7' : 'p-2 w-8 h-8'}
-        rounded-md transition-all duration-200 flex items-center justify-center
-        ${active
-                ? 'bg-blue-500 text-white shadow-md'
-                : 'bg-gray-700/80 text-gray-300 hover:bg-gray-600 hover:text-white border border-gray-600/50'}
-      `}
+                p-1.5 w-7 h-7 rounded-sm transition-all duration-200 flex items-center justify-center border border-transparent
+                ${active
+                ? 'bg-blue-500 text-white'
+                : 'bg-gray-700/60 text-gray-300 hover:bg-gray-600/70 hover:text-white border-gray-600/40'}
+            `}
         >
-            <Icon className={size === 'sm' ? 'w-3.5 h-3.5' : 'w-4 h-4'} />
+            <Icon className="w-4 h-4" />
         </button>
     );
 
-    const SectionHeader = ({ title, rightIcon }) => (
-        <div className="flex items-center justify-between mb-3">
-            <h3 className="text-sm font-semibold text-white tracking-wide">{title}</h3>
-            {rightIcon && <div className="flex items-center gap-1">{rightIcon}</div>}
-        </div>
+    const SectionHeader = ({ title }) => (
+        <h4 className="text-xs font-semibold text-gray-300 mb-2 uppercase tracking-wide">
+            {title}
+        </h4>
     );
 
-    const Divider = () => <div className="border-t border-gray-700/60 my-5" />;
-
-    const ColorPreview = ({ color, onClick }) => (
-        <button
-            onClick={onClick}
-            className="w-8 h-6 rounded-md border-2 border-gray-600/50 relative overflow-hidden group hover:border-gray-500 transition-colors"
-            style={{ backgroundColor: color }}
-        >
-            <div className="absolute inset-0 bg-gradient-to-br from-transparent to-black/10"></div>
-        </button>
-    );
-
-    const CustomColorPicker = () => (
-        <div className="space-y-3">
-            <div className="relative">
-                <input
-                    type="color"
-                    value={props.color || '#333333'}
-                    onChange={e => setProp(p => (p.color = e.target.value))}
-                    className="w-full h-24 bg-gray-700 border border-gray-600 rounded-lg cursor-pointer"
-                />
-                <div className="absolute bottom-2 left-2 right-2 bg-black/50 rounded px-2 py-1">
-                    <span className="text-white text-xs font-mono">{props.color || '#333333'}</span>
-                </div>
-            </div>
-            <div className="grid grid-cols-8 gap-1">
-                {[
-                    '#000000',
-                    '#374151',
-                    '#6b7280',
-                    '#9ca3af',
-                    '#d1d5db',
-                    '#f3f4f6',
-                    '#ffffff',
-                    '#ef4444',
-                    '#f97316',
-                    '#f59e0b',
-                    '#eab308',
-                    '#84cc16',
-                    '#22c55e',
-                    '#10b981',
-                    '#06b6d4',
-                    '#0ea5e9',
-                    '#3b82f6',
-                    '#6366f1',
-                    '#8b5cf6',
-                    '#a855f7',
-                    '#d946ef',
-                    '#ec4899'
-                ].map(color => (
-                    <button
-                        key={color}
-                        onClick={() => setProp(p => (p.color = color))}
-                        className="w-6 h-6 rounded border border-gray-600/50 hover:scale-110 transition-transform"
-                        style={{ backgroundColor: color }}
-                    />
-                ))}
-            </div>
-        </div>
-    );
+    const Divider = () => <div className="border-t border-gray-700/50 my-4" />;
 
     return (
-        <div className="bg-gray-850 text-white p-4 space-y-4 text-sm border-l border-gray-700/50">
-            {/* Typography Section */}
-            <div>
-                <SectionHeader title="Typography" rightIcon={<IconButton icon={Type} size="sm" />} />
+        <div className=" p-3 text-white text-sm font-sans border-l border-gray-700">
 
-                {/* Font Size */}
-                <div className="mb-4">
+            <div className="pb-4">
+                <SectionHeader title="Layout" />
+                <div className="space-y-2">
                     <NumberInput
-                        label="Size"
-                        value={props.fontSize}
-                        onChange={val => setProp(p => (p.fontSize = val))}
+                        label="Width"
+                        value={props.width}
+                        onChange={val => setProp(p => (p.width = val))}
                         suffix="px"
-                        min={8}
-                        max={200}
+                        min={50}
+                        max={2000}
+                    />
+                    <NumberInput
+                        label="Height"
+                        value={props.height}
+                        onChange={val => setProp(p => (p.height = val))}
+                        suffix="px"
+                        min={20}
+                        max={2000}
                     />
                 </div>
-
-                {/* Font Weight & Style */}
-                <div className="mb-4">
-                    <div className="text-[10px] text-gray-400 mb-2 uppercase tracking-wider font-medium">
-                        Weight & Style
-                    </div>
-                    <div className="flex gap-1 mb-3">
-                        <IconButton
-                            icon={Bold}
-                            active={props.fontWeight === 'bold'}
-                            onClick={() =>
-                                setProp(p => (p.fontWeight = p.fontWeight === 'bold' ? 'normal' : 'bold'))
-                            }
-                        />
-                        <IconButton icon={Italic} />
-                        <IconButton icon={Underline} />
-
-                        <div className="w-px bg-gray-600 mx-1.5"></div>
-
-                        <select
-                            value={props.fontWeight}
-                            onChange={e => setProp(p => (p.fontWeight = e.target.value))}
-                            className="bg-gray-700/80 border border-gray-600/50 rounded-md px-2 py-1 text-xs text-white flex-1"
-                        >
-                            <option value="normal">Regular</option>
-                            <option value="semibold">Semibold</option>
-                            <option value="bold">Bold</option>
-                        </select>
-                    </div>
-                </div>
-
-                {/* Text Alignment */}
-                <div className="mb-4">
-                    <div className="text-[10px] text-gray-400 mb-2 uppercase tracking-wider font-medium">
-                        Alignment
-                    </div>
-                    <div className="flex gap-1">
-                        <IconButton
-                            icon={AlignLeft}
-                            active={props.textAlign === 'left'}
-                            onClick={() => setProp(p => (p.textAlign = 'left'))}
-                        />
-                        <IconButton
-                            icon={AlignCenter}
-                            active={props.textAlign === 'center'}
-                            onClick={() => setProp(p => (p.textAlign = 'center'))}
-                        />
-                        <IconButton
-                            icon={AlignRight}
-                            active={props.textAlign === 'right'}
-                            onClick={() => setProp(p => (p.textAlign = 'right'))}
-                        />
-                        <IconButton icon={AlignJustify} />
-                    </div>
+                <div className="grid grid-cols-2 gap-x-3 gap-y-2 pt-3">
+                    <NumberInput
+                        label="Margin T"
+                        value={props.margin?.[0]}
+                        onChange={val => setProp(p => (p.margin = [val, p.margin?.[1], p.margin?.[2], p.margin?.[3]]))}
+                        suffix="px"
+                    />
+                    <NumberInput
+                        label="Margin R"
+                        value={props.margin?.[1]}
+                        onChange={val => setProp(p => (p.margin = [p.margin?.[0], val, p.margin?.[2], p.margin?.[3]]))}
+                        suffix="px"
+                    />
+                    <NumberInput
+                        label="Margin B"
+                        value={props.margin?.[2]}
+                        onChange={val => setProp(p => (p.margin = [p.margin?.[0], p.margin?.[1], val, p.margin?.[3]]))}
+                        suffix="px"
+                    />
+                    <NumberInput
+                        label="Margin L"
+                        value={props.margin?.[3]}
+                        onChange={val => setProp(p => (p.margin = [p.margin?.[0], p.margin?.[1], p.margin?.[2], val]))}
+                        suffix="px"
+                    />
                 </div>
             </div>
 
             <Divider />
 
-            {/* Dimensions Section */}
-            <div>
-                <SectionHeader title="Dimensions" />
-                <div className="space-y-2.5">
-                    <div className="grid grid-cols-2 gap-3">
-                        <NumberInput
-                            label="W"
-                            value={props.width}
-                            onChange={val => setProp(p => (p.width = val))}
-                            suffix="px"
-                            min={10}
-                        />
-                        <NumberInput
-                            label="H"
-                            value={props.height}
-                            onChange={val => setProp(p => (p.height = val))}
-                            suffix="px"
-                            min={10}
-                        />
-                    </div>
+            <div className="space-y-2 pb-4">
+                <SectionHeader title="Spacing" />
+                <NumberInput
+                    label="Line Height"
+                    value={props.lineHeight}
+                    onChange={val => setProp(p => (p.lineHeight = val))}
+                    min={0.5}
+                    max={4}
+                />
+                <NumberInput
+                    label="Letter Spacing"
+                    value={props.letterSpacing}
+                    onChange={val => setProp(p => (p.letterSpacing = val))}
+                    suffix="px"
+                    min={-5}
+                    max={20}
+                />
+                <NumberInput
+                    label="Paragraph Spacing"
+                    value={props.paragraphSpacing}
+                    onChange={val => setProp(p => (p.paragraphSpacing = val))}
+                    suffix="px"
+                    min={0}
+                    max={50}
+                />
+            </div>
+
+            <Divider />
+
+            <div className="space-y-2 pb-4">
+                <SectionHeader title="Content" />
+                <textarea
+                    value={props.text}
+                    onChange={e => setProp(p => (p.text = e.target.value))}
+                    rows={3}
+                    className="w-full bg-gray-700/60 rounded-sm p-2 text-xs text-white focus:outline-none border border-gray-600/40 focus:border-blue-500 transition-colors"
+                />
+            </div>
+
+            <Divider />
+
+            <div className="space-y-2 pb-4">
+                <SectionHeader title="Font" />
+                <div className="flex items-center justify-between py-1">
+                    <span className="text-[11px] text-gray-400 uppercase tracking-wider font-medium">Family</span>
+                    <select
+                        value={props.fontFamily}
+                        onChange={e => setProp(p => (p.fontFamily = e.target.value))}
+                        className="bg-gray-700/60 text-white text-xs rounded-sm p-1.5 focus:outline-none border border-gray-600/40 focus:border-blue-500 transition-colors"
+                    >
+                        {fontFamilies.map(f => (
+                            <option key={f} value={f}>{f}</option>
+                        ))}
+                    </select>
+                </div>
+                <NumberInput
+                    label="Size"
+                    value={props.fontSize}
+                    onChange={val => setProp(p => (p.fontSize = val))}
+                    suffix="px"
+                    min={6}
+                    max={200}
+                />
+            </div>
+
+            <Divider />
+
+            <div className="space-y-2 pb-4">
+                <SectionHeader title="Style" />
+                <div className="flex items-center gap-2">
+                    <IconButton
+                        icon={Bold}
+                        active={props.fontWeight === 'bold'}
+                        onClick={() =>
+                            setProp(p => (p.fontWeight = p.fontWeight === 'bold' ? 'normal' : 'bold'))
+                        }
+                        title="Bold"
+                    />
+                    <IconButton
+                        icon={Italic}
+                        active={props.fontStyle === 'italic'}
+                        onClick={() =>
+                            setProp(p => (p.fontStyle = p.fontStyle === 'italic' ? 'normal' : 'italic'))
+                        }
+                        title="Italic"
+                    />
+                    <IconButton
+                        icon={Underline}
+                        active={props.textDecoration === 'underline'}
+                        onClick={() =>
+                            setProp(p => (p.textDecoration = p.textDecoration === 'underline' ? 'none' : 'underline'))
+                        }
+                        title="Underline"
+                    />
+                    <IconButton
+                        icon={Strikethrough}
+                        active={props.textDecoration === 'line-through'}
+                        onClick={() =>
+                            setProp(p => (p.textDecoration = p.textDecoration === 'line-through' ? 'none' : 'line-through'))
+                        }
+                        title="Strikethrough"
+                    />
                 </div>
             </div>
 
             <Divider />
 
-            {/* Fill Section */}
-            <div>
-                <SectionHeader title="Fill" rightIcon={<IconButton icon={Plus} size="sm" />} />
-
-                {/* Color Fill */}
-                <div className="flex items-center justify-between mb-3">
-                    <div className="flex items-center gap-3">
-                        <ColorPreview color={props.color} onClick={() => setShowColorPicker(!showColorPicker)} />
-                        <span className="text-xs text-white font-medium">Text</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                        <div className="flex items-center bg-gray-700/80 rounded-md px-2 py-1.5 border border-gray-600/50">
-                            <span className="text-white text-xs font-mono">100</span>
-                            <span className="text-gray-400 text-[10px] ml-1 font-medium">%</span>
-                        </div>
-                        <IconButton icon={Eye} size="sm" />
-                        <IconButton icon={Minus} size="sm" />
-                    </div>
+            <div className="space-y-2 pb-4">
+                <SectionHeader title="Alignment" />
+                <div className="flex items-center gap-2">
+                    <IconButton
+                        icon={AlignLeft}
+                        active={props.textAlign === 'left'}
+                        onClick={() => setProp(p => (p.textAlign = 'left'))}
+                        title="Align Left"
+                    />
+                    <IconButton
+                        icon={AlignCenter}
+                        active={props.textAlign === 'center'}
+                        onClick={() => setProp(p => (p.textAlign = 'center'))}
+                        title="Align Center"
+                    />
+                    <IconButton
+                        icon={AlignRight}
+                        active={props.textAlign === 'right'}
+                        onClick={() => setProp(p => (p.textAlign = 'right'))}
+                        title="Align Right"
+                    />
+                    <IconButton
+                        icon={AlignJustify}
+                        active={props.textAlign === 'justify'}
+                        onClick={() => setProp(p => (p.textAlign = 'justify'))}
+                        title="Justify"
+                    />
                 </div>
+            </div>
 
-                {showColorPicker && <CustomColorPicker />}
+            <Divider />
+
+            <div className="space-y-2 pb-1">
+                <SectionHeader title="Color" />
+                <div className="flex items-center gap-2">
+                    <label htmlFor="textColor" className="text-xs text-gray-300 w-full">Text Color</label>
+                    <input
+                        type="color"
+                        id="textColor"
+                        value={props.color || '#000000'}
+                        onChange={e => setProp(p => (p.color = e.target.value))}
+                        className="w-10 h-6 p-0 border border-gray-600/50 rounded-sm bg-transparent cursor-pointer overflow-hidden appearance-none [&::-webkit-color-swatch-wrapper]:p-0 [&::-webkit-color-swatch]:border-none [&::-moz-color-swatch]:border-none"
+                        title="Text Color"
+                    />
+                </div>
+                <div className="flex items-center gap-2">
+                    <label htmlFor="bgColor" className="text-xs text-gray-300 w-full">Background</label>
+                    <input
+                        type="color"
+                        id="bgColor"
+                        value={props.backgroundColor || '#ffffff'}
+                        onChange={e => setProp(p => (p.backgroundColor = e.target.value))}
+                        className="w-10 h-6 p-0 border border-gray-600/50 rounded-sm bg-transparent cursor-pointer overflow-hidden appearance-none [&::-webkit-color-swatch-wrapper]:p-0 [&::-webkit-color-swatch]:border-none [&::-moz-color-swatch]:border-none"
+                        title="Background Color"
+                    />
+                </div>
             </div>
         </div>
     );

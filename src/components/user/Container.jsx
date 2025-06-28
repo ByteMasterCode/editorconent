@@ -43,7 +43,7 @@ export const Container = ({
         padding: `${padding[0]}px ${padding[1]}px ${padding[2]}px ${padding[3]}px`,
         margin: `${margin[0]}px ${margin[1]}px ${margin[2]}px ${margin[3]}px`,
         borderRadius: `${borderRadius}px`,
-        minHeight: `${minHeight}px`,
+        minHeight: `auto`,
         width: `${width}px`,
         height: `${height}px`,
         transform: `translate(${x}px, ${y}px) rotate(${rotation}deg)`,
@@ -143,11 +143,7 @@ export const Container = ({
             ref={(ref) => connect(drag(ref))}
             className={`transition-all duration-200 ${selected ? 'ring-2 ring-blue-500 ring-offset-2' : ''}`}
             style={containerStyle}
-            onMouseDown={(e) => {
-                if (!isResizing) {
-                    e.stopPropagation();
-                }
-            }}
+            onClick={e => e.stopPropagation()}
         >
             {children}
 

@@ -269,6 +269,7 @@ export const Chart = ({
                 width: `${width}px`,
                 height: `${height}px`,
             }}
+            onClick={e => e.stopPropagation()}
         >
             <div
                 className="w-full h-full rounded-lg border border-gray-200 shadow-sm overflow-hidden"

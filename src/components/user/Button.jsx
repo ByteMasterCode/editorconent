@@ -144,6 +144,7 @@ export const Button = ({
                 width: `${width}px`,
                 height: `${height}px`
             }}
+            onClick={e => e.stopPropagation()}
         >
             <button
                 ref={buttonRef}

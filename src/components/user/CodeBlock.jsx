@@ -100,6 +100,7 @@ export const CodeBlock = ({
                 width: `${width}px`,
                 height: `${height}px`
             }}
+            onClick={e => e.stopPropagation()}
         >
             <div className="relative w-full h-full overflow-hidden rounded-lg">
                 <SyntaxHighlighter

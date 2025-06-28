@@ -187,6 +187,7 @@ export const Document = ({
                 onDrop={handleDrop}
                 onDragOver={handleDragOver}
                 onDragLeave={handleDragLeave}
+                onClick={e => e.stopPropagation()}
             >
                 {src ? (
                     <div className="relative w-full h-full">

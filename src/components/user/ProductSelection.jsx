@@ -7,32 +7,50 @@ const SAMPLE_PRODUCTS = [
     {
         id: 'basic',
         name: 'Basic Course Materials',
-        description: 'Essential learning resources to get you started with comprehensive study materials and basic support.',
-        image: 'https://images.pexels.com/photos/159711/books-bookstore-book-reading-159711.jpeg?auto=compress&cs=tinysrgb&w=400',
+        description:
+            'Essential learning resources to get you started with comprehensive study materials and basic support.',
+        image:
+            'https://images.pexels.com/photos/159711/books-bookstore-book-reading-159711.jpeg?auto=compress&cs=tinysrgb&w=400',
         price: 29,
         features: ['PDF Materials', 'Basic Support', 'Community Access', '30-day Access'],
-        icon: Package
+        icon: Package,
     },
     {
         id: 'premium',
         name: 'Premium Resources',
-        description: 'Advanced learning package with interactive content, priority support, and extended access.',
-        image: 'https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=400',
+        description:
+            'Advanced learning package with interactive content, priority support, and extended access.',
+        image:
+            'https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=400',
         price: 79,
-        features: ['All Basic Features', 'Video Tutorials', 'Priority Support', 'Interactive Exercises', '90-day Access'],
+        features: [
+            'All Basic Features',
+            'Video Tutorials',
+            'Priority Support',
+            'Interactive Exercises',
+            '90-day Access',
+        ],
         badge: 'Popular',
-        icon: Crown
+        icon: Crown,
     },
     {
         id: 'expert',
         name: 'Expert Package',
-        description: 'Complete learning solution with 1-on-1 mentoring, certification, and lifetime access.',
-        image: 'https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=400',
+        description:
+            'Complete learning solution with 1-on-1 mentoring, certification, and lifetime access.',
+        image:
+            'https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=400',
         price: 199,
-        features: ['All Premium Features', '1-on-1 Mentoring', 'Certification', 'Lifetime Access', 'Custom Projects'],
+        features: [
+            'All Premium Features',
+            '1-on-1 Mentoring',
+            'Certification',
+            'Lifetime Access',
+            'Custom Projects',
+        ],
         badge: 'Best Value',
-        icon: Zap
-    }
+        icon: Zap,
+    },
 ];
 
 export const ProductSelection = ({
@@ -43,14 +61,14 @@ export const ProductSelection = ({
                                      width = 800,
                                      height = 600,
                                      margin = [0, 0, 0, 0],
-                                     borderRadius = 12
+                                     borderRadius = 12,
                                  }) => {
     const {
         connectors: { connect, drag },
         selected,
-        actions: { setProp }
+        actions: { setProp },
     } = useNode(state => ({
-        selected: state.events.selected
+        selected: state.events.selected,
     }));
 
     const [isResizing, setIsResizing] = useState(false);
@@ -108,7 +126,7 @@ export const ProductSelection = ({
         const cursors = {
             'bottom-right': 'se-resize',
             right: 'e-resize',
-            bottom: 's-resize'
+            bottom: 's-resize',
         };
         return cursors[direction] || 'default';
     };
@@ -126,18 +144,18 @@ export const ProductSelection = ({
             cursor: getCursor(direction),
             boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
             transition: isActive ? 'none' : 'all 0.15s ease',
-            zIndex: 10
+            zIndex: 10,
         };
     };
 
     return (
         <div
             ref={ref => connect(drag(ref))}
-            className={`transition-all duration-200 relative ${selected ? 'ring-2 ring-blue-500' : ''}`}
+            className={`relative transition-all duration-200 ${selected ? 'ring-2 ring-blue-500' : ''}`}
             style={{
                 margin: `${margin[0]}px ${margin[1]}px ${margin[2]}px ${margin[3]}px`,
                 width: `${width}px`,
-                height: `${height}px`
+                height: `${height}px`,
             }}
             onClick={e => e.stopPropagation()}
         >
@@ -153,7 +171,9 @@ export const ProductSelection = ({
                         </div>
                         <div>
                             <h2 className="text-lg font-bold text-gray-800">Choose Your Package</h2>
-                            <p className="text-sm text-gray-600">Select the perfect learning package for your needs</p>
+                            <p className="text-sm text-gray-600">
+                                Select the perfect learning package for your needs
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -174,21 +194,18 @@ export const ProductSelection = ({
                                     }`}
                                     onClick={e => handleProductSelect(product.id, e)}
                                 >
-                                    {/* Badge */}
                                     {product.badge && (
                                         <div className="absolute -top-2 left-4 bg-gradient-to-r from-orange-500 to-red-500 text-white text-xs font-bold px-3 py-1 rounded-full">
                                             {product.badge}
                                         </div>
                                     )}
 
-                                    {/* Indicator */}
                                     {isSelected && (
                                         <div className="absolute top-3 right-3 w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center">
                                             <Check className="w-4 h-4 text-white" />
                                         </div>
                                     )}
 
-                                    {/* Image */}
                                     <div className="relative mb-4">
                                         <img
                                             src={product.image}
@@ -200,18 +217,20 @@ export const ProductSelection = ({
                                         </div>
                                     </div>
 
-                                    {/* Info */}
                                     <div className="space-y-3">
                                         <div>
                                             <h3 className="font-bold text-gray-800 text-lg">{product.name}</h3>
-                                            <p className="text-sm text-gray-600 leading-relaxed">{product.description}</p>
+                                            <p className="text-sm text-gray-600 leading-relaxed">
+                                                {product.description}
+                                            </p>
                                         </div>
 
-                                        {/* Pricing */}
                                         {showPricing && (
                                             <div className="flex items-center justify-between">
                                                 <div className="flex items-baseline gap-1">
-                                                    <span className="text-2xl font-bold text-gray-800">${product.price}</span>
+                          <span className="text-2xl font-bold text-gray-800">
+                            ${product.price}
+                          </span>
                                                     <span className="text-sm text-gray-500">one-time</span>
                                                 </div>
                                                 <div className="flex items-center gap-1">
@@ -221,13 +240,17 @@ export const ProductSelection = ({
                                             </div>
                                         )}
 
-                                        {/* Features */}
                                         {showFeatures && (
                                             <div className="space-y-2">
-                                                <h4 className="text-sm font-semibold text-gray-700">What's included:</h4>
+                                                <h4 className="text-sm font-semibold text-gray-700">
+                                                    What's included:
+                                                </h4>
                                                 <ul className="space-y-1">
                                                     {product.features.slice(0, 3).map((feat, i) => (
-                                                        <li key={i} className="flex items-center gap-2 text-xs text-gray-600">
+                                                        <li
+                                                            key={i}
+                                                            className="flex items-center gap-2 text-xs text-gray-600"
+                                                        >
                                                             <Check className="w-3 h-3 text-green-500" />
                                                             {feat}
                                                         </li>
@@ -241,10 +264,11 @@ export const ProductSelection = ({
                                             </div>
                                         )}
 
-                                        {/* Button */}
                                         <button
                                             className={`w-full py-2 px-4 rounded-lg font-medium transition-all ${
-                                                isSelected ? 'bg-blue-500 text-white shadow-md' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                                                isSelected
+                                                    ? 'bg-blue-500 text-white shadow-md'
+                                                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                                             }`}
                                             onClick={e => handleProductSelect(product.id, e)}
                                         >
@@ -262,14 +286,17 @@ export const ProductSelection = ({
             {selected && (
                 <>
                     <div
+                        data-resize-handle
                         style={{ ...getHandleStyle('bottom-right'), bottom: 0, right: 0 }}
                         onMouseDown={handleMouseDown('bottom-right')}
                     />
                     <div
+                        data-resize-handle
                         style={{ ...getHandleStyle('right'), right: 0, top: '50%' }}
                         onMouseDown={handleMouseDown('right')}
                     />
                     <div
+                        data-resize-handle
                         style={{ ...getHandleStyle('bottom'), bottom: 0, left: '50%' }}
                         onMouseDown={handleMouseDown('bottom')}
                     />
@@ -289,9 +316,9 @@ ProductSelection.craft = {
         width: 800,
         height: 600,
         margin: [0, 0, 0, 0],
-        borderRadius: 12
+        borderRadius: 12,
     },
     related: {
-        settings: ProductSelectionSettings
-    }
+        settings: ProductSelectionSettings,
+    },
 };

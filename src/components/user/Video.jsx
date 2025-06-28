@@ -145,6 +145,7 @@ export const Video = ({
                 width: `${width}px`,
                 height: `${height}px`
             }}
+            onClick={e => e.stopPropagation()}
         >
             <div
                 className={`w-full h-full rounded-lg overflow-hidden border-2 border-dashed transition-all duration-200 ${

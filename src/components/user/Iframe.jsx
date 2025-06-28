@@ -110,6 +110,7 @@ export const Iframe = ({
                 width: `${width}px`,
                 height: `${height}px`
             }}
+            onClick={e => e.stopPropagation()}
         >
             <div
                 className="w-full h-full rounded-lg overflow-hidden border border-gray-300 bg-white relative"

@@ -3,7 +3,6 @@ import { Editor } from '@craftjs/core';
 import { PagesProvider } from './contexts/PagesContext';
 import { Topbar } from './components/Topbar';
 import { Toolbox } from './components/Toolbox';
-import { EnhancedPropertiesPanel } from './components/EnhancedPropertiesPanel';
 import { PagesPanel } from './components/PagesPanel';
 import { Canvas } from './components/Canvas';
 
@@ -21,9 +20,15 @@ import { Document } from './components/user/Document';
 import { ProductSelection } from './components/user/ProductSelection';
 import { CourseTimeline } from './components/user/CourseTimeline';
 import { QuizBuilder } from './components/user/QuizBuilder';
+import {PropertiesLayersPanel} from "./components/PropertiesLayersPanel";
+import { Shape } from './components/user/Shape';
+
+import {HotkeyProvider} from "./contexts/HotkeyContext";
+import {HotkeyManager} from "./components/HotkeyManager";
 
 function App() {
     return (
+     <HotkeyProvider>
         <PagesProvider>
             <div className="h-screen flex flex-col bg-gray-950 text-white overflow-hidden">
                 <Editor
@@ -40,9 +45,11 @@ function App() {
                         Document,
                         ProductSelection,
                         CourseTimeline,
-                        QuizBuilder
+                        QuizBuilder,
+                        Shape
                     }}
                 >
+                    <HotkeyManager/>
                     <Topbar />
 
                     <div className="flex flex-1 overflow-hidden">
@@ -56,11 +63,12 @@ function App() {
                         <Canvas />
 
                         {/* Правая панель - Свойства */}
-                        <EnhancedPropertiesPanel />
+                        <PropertiesLayersPanel />
                     </div>
                 </Editor>
             </div>
         </PagesProvider>
+     </HotkeyProvider>
     );
 }
 

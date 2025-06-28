@@ -16,9 +16,10 @@ import {
     Share2,
     Save,
     ChevronLeft,
-    ChevronRight
+    ChevronRight, KeyboardIcon
 } from 'lucide-react';
 import { PreviewMode } from './PreviewMode';
+import {HotkeySettingsModal} from "./HotkeySettingsModal";
 
 export const Topbar = () => {
     // Берём actions, query и enabled из editor
@@ -28,6 +29,7 @@ export const Topbar = () => {
     // А canUndo/canRedo получаем через query.history
     const canUndo = query.history.canUndo();
     const canRedo = query.history.canRedo();
+    const [isHotkeyModalOpen, setHotkeyModalOpen] = useState(false);
 
     const {
         pages,
@@ -158,16 +160,19 @@ export const Topbar = () => {
                 {/* Сохранение / Экспорт / Режимы */}
                 <div className="flex items-center gap-3">
                     <div className="flex items-center gap-1">
-                        <IconButton icon={Save} onClick={saveCurrentPage} />
-                        <IconButton icon={Download} onClick={exportJSON} />
+                        <IconButton icon={Save} onClick={saveCurrentPage}/>
+                        <IconButton icon={Download} onClick={exportJSON}/>
                         <label>
-                            <IconButton icon={Upload} onClick={() => {}} />
-                            <input type="file" accept=".json" onChange={importJSON} className="hidden" />
+                            <IconButton icon={Upload} onClick={() => {
+                            }}/>
+                            <input type="file" accept=".json" onChange={importJSON} className="hidden"/>
                         </label>
                     </div>
 
                     <button
-                        onClick={() => actions.setOptions(opts => { opts.enabled = !enabled; })}
+                        onClick={() => actions.setOptions(opts => {
+                            opts.enabled = !enabled;
+                        })}
                         className={`
               px-4 py-2 rounded-lg font-medium transition-all duration-200 flex items-center gap-2
               ${enabled
@@ -175,20 +180,34 @@ export const Topbar = () => {
                             : 'bg-blue-500 hover:bg-blue-600 text-white shadow-lg'}
             `}
                     >
-                        {enabled ? <><Eye className="w-4 h-4" /> Preview</>
-                            : <><Code className="w-4 h-4" /> Edit</>}
+                        {enabled ? <><Eye className="w-4 h-4"/> Preview</>
+                            : <><Code className="w-4 h-4"/> Edit</>}
+                    </button>
+                    <button
+                        onClick={() => setHotkeyModalOpen(true)}
+                        className="px-4 py-2 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white rounded-lg font-medium transition-all duration-200 flex items-center gap-2 shadow-lg"
+                    >
+                        <KeyboardIcon className="w-4 h-4"/>
+                        Hotkeys
                     </button>
 
                     <button
-                        onClick={() => setIsPreviewOpen(true)}
+                        onClick={() => {
+                            actions.setOptions((opts) => {
+                                opts.enabled = false;
+                            });
+                            setIsPreviewOpen(true);
+                        }}
                         className="px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white rounded-lg font-medium transition-all duration-200 flex items-center gap-2 shadow-lg"
                     >
-                        <Play className="w-4 h-4" />
+                        <Play className="w-4 h-4"/>
                         Course Preview
                     </button>
 
-                    <button className="px-4 py-2 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white rounded-lg font-medium transition-all duration-200 flex items-center gap-2 shadow-lg">
-                        <Share2 className="w-4 h-4" />
+
+                    <button
+                        className="px-4 py-2 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white rounded-lg font-medium transition-all duration-200 flex items-center gap-2 shadow-lg">
+                        <Share2 className="w-4 h-4"/>
                         Share
                     </button>
                 </div>
@@ -196,7 +215,14 @@ export const Topbar = () => {
                 <div className="hidden" data-viewport={viewMode}></div>
             </div>
 
-            <PreviewMode isOpen={isPreviewOpen} onClose={() => setIsPreviewOpen(false)} />
+            <PreviewMode isOpen={isPreviewOpen} onClose={() => setIsPreviewOpen(false)}/>
+            <HotkeySettingsModal
+                isOpen={isHotkeyModalOpen}
+                onClose={() => setHotkeyModalOpen(false)}
+            />
+
+
+
         </>
     );
 };

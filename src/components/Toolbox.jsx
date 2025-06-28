@@ -19,6 +19,7 @@ import { Document } from './user/Document';
 import { ProductSelection } from './user/ProductSelection';
 import { CourseTimeline } from './user/CourseTimeline';
 import { QuizBuilder } from './user/QuizBuilder';
+import {Shape} from "./user/Shape";
 
 export const Toolbox = () => {
     const { connectors } = useEditor();
@@ -32,10 +33,10 @@ export const Toolbox = () => {
             category: 'Basic'
         },
         {
-            name: 'Button',
+            name: 'Tugma',
             icon: MousePointer,
-            element: <Button text="New Button" />,
-            description: 'Interactive button',
+            element: <Button text="Tugma nomi..." />,
+            description: 'Intaraktiv tugma',
             category: 'Basic'
         },
         {
@@ -44,6 +45,13 @@ export const Toolbox = () => {
             element: <Element is={Container} canvas />,
             description: 'Layout container',
             category: 'Layout'
+        },
+        {
+            name: 'Shape',
+            icon: Square, // можно заменить на другой
+            element: <Shape type="rectangle" />,
+            description: 'Basic shape component',
+            category: 'Shapes'
         },
         {
             name: 'Image',
@@ -120,7 +128,7 @@ export const Toolbox = () => {
     const categories = [...new Set(tools.map(tool => tool.category))];
 
     return (
-        <div className="bg-gray-900/95 backdrop-blur-sm border-r border-gray-800/50 w-64 flex flex-col">
+        <div className="bg-gray-900/95 backdrop-blur-sm border-r border-gray-800/50 w-80 flex flex-col">
             <div className="p-4 border-b border-gray-800/50">
                 <div className="flex items-center gap-2 mb-2">
                     <div className="w-5 h-5 bg-gradient-to-br from-blue-500 to-purple-600 rounded flex items-center justify-center">
